@@ -17,7 +17,7 @@ This React application visualizes different sorting algorithms. It allows the us
 ## How to Use the App
 
 1. Choose the sorting algorithm you want to visualize from the top bar.
-2. Use the slider to adjust the number of elements in the array and the sorting speed. The maximum number of elements is 310.
+2. Use the sliders to adjust the number of elements in the array and the sorting speed. The maximum number of elements is 310.
 3. Click on the "Generate New Array" button to generate a new array with random values.
 
 ## Technologies Used
