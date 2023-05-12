@@ -1,7 +1,7 @@
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import RangeSlider from 'react-bootstrap-range-slider';
 import React from 'react';
-import {getInsertionSortAnimations, getMergeSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
+import {getInsertionSortAnimations, getMergeSortAnimations, getSelectionSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
 
@@ -11,6 +11,8 @@ const PRIMARY_COLOR = 'turquoise';
 const SECONDARY_COLOR = 'red';
 
 const INSERTION_SECONDARY = 'Aquamarine';
+
+const SELECTION_SECONDARY_COLOR = 'yellow';
 
 export default class SortingVisualizer extends React.Component {
   constructor(props) {
@@ -96,11 +98,25 @@ export default class SortingVisualizer extends React.Component {
     
   }
 
+  selectionSort() {
+  const animations = getSelectionSortAnimations(this.state.array);
+  const arrayBars = document.getElementsByClassName('array-bar');
+  const colors = [PRIMARY_COLOR, SELECTION_SECONDARY_COLOR, SECONDARY_COLOR];
+  for (let i = 0; i < animations.length; i++) {
+    const [barIdx, newHeight, barColor] = animations[i];
+    const barStyle = arrayBars[barIdx].style;
+
+    setTimeout(() => {
+      barStyle.backgroundColor = colors[barColor];
+      barStyle.height = `${newHeight}px`;
+    }, i * this.state.ANIMATION_SPEED_MS);
+  }
+  }
+
   quickSort() {
   }
 
-  selectionSort() {
-  }
+
 
 
 
