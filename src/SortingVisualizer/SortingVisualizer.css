@@ -33,10 +33,6 @@ header * {
     display: inline;  
 }  
 
-header ul {
-    margin: 10px;
-}
-
 header li {  
     margin: 10px;
 }  
@@ -51,7 +47,7 @@ header li button {
 }  
 
 .slide-container {
-    margin: 20px;
+    margin: 15px;
     font-family: Georgia;
     color: white;
     font-size: 1.3vw;
@@ -59,6 +55,12 @@ header li button {
 
 .slider {
     height: 15px;
+    margin: 20px;
+}
+
+label {
+    font-family: Georgia;
+    font-size: large;
 }
 
 .slider::-webkit-slider-thumb {
@@ -71,4 +73,5 @@ header li button {
     height: 50px;
     position:absolute;
     top: 0px;
+    margin: 10px;
 }

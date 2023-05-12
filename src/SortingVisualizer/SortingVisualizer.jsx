@@ -25,8 +25,9 @@ export default class SortingVisualizer extends React.Component {
     };
   }
 
-  slider() {
-    return 
+  setSpeed(newspeed) {
+    const speed = 0.2 + 100 - newspeed;
+    this.setState({ ANIMATION_SPEED_MS:speed });
   }
 
   componentDidMount() {
@@ -128,9 +129,16 @@ export default class SortingVisualizer extends React.Component {
       <header>
       <nav className='top-bar'>  
       <div className="slide-container">
-          <p>Change Number of Bars & Sorting Speed </p>
-          <input type="range" min="20" max="310" value={this.state.NUMBER_OF_ARRAY_BARS} className="slider" id="myRange" onChange={changeEvent => this.setNumberOfBars(changeEvent.target.value)}>
+      <div className="label-container">
+        <label htmlFor="size">Array Size</label>
+      </div>
+          <input type="range" min="20" max="310" name="size" value={this.state.NUMBER_OF_ARRAY_BARS} className="slider" id="myRange" onChange={changeEvent => this.setNumberOfBars(changeEvent.target.value)}>
           </input>
+      </div>
+      <div className='slide-container'>
+      <label for="speed">Sort Speed</label>
+      <input type="range" min="0.2" max="100" name="speed" value={0.2 + 100 - this.state.ANIMATION_SPEED_MS} className="slider" id="mySpeed" onChange={changeEvent => this.setSpeed(changeEvent.target.value)}>
+      </input>
         </div>
         <div className='head-bar'></div>
         <ul> 
