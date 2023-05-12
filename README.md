@@ -2,6 +2,8 @@
 
 # Sorting Algorithm Visualizer
 
+https://github.com/saksham2694/Sorting-visualizer/assets/71970380/3520dd12-e254-49e8-bc38-dbd8bfbd05d3
+
 This React application visualizes different sorting algorithms. It allows the user to choose between four different algorithms: Merge Sort, Quick Sort, Insertion Sort, and Selection Sort. The user can also adjust the speed of the sorting and the number of elements in the array. The bars representing the elements of the array will be animated to show how the selected algorithm sorts the array.
 
 ## How to Run the App
