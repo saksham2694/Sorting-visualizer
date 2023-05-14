@@ -1,7 +1,7 @@
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import RangeSlider from 'react-bootstrap-range-slider';
 import React from 'react';
-import {getInsertionSortAnimations, getMergeSortAnimations, getSelectionSortAnimations} from '../sortingAlgorithms/sortingAlgorithms.js';
+import {getInsertionSortAnimations, getMergeSortAnimations, getSelectionSortAnimations, getQuickSortAnimations } from '../sortingAlgorithms/sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
 
