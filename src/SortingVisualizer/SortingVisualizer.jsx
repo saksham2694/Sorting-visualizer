@@ -115,6 +115,18 @@ export default class SortingVisualizer extends React.Component {
   }
 
   quickSort() {
+  const animations = getQuickSortAnimations(this.state.array);
+  const arrayBars = document.getElementsByClassName('array-bar');
+  const colors = [PRIMARY_COLOR, SELECTION_SECONDARY_COLOR, SECONDARY_COLOR];
+  for (let i = 0; i < animations.length; i++) {
+    const [barIdx, newHeight, barColor] = animations[i];
+    const barStyle = arrayBars[barIdx].style;
+
+    setTimeout(() => {
+      barStyle.backgroundColor = colors[barColor];
+      barStyle.height = `${newHeight}px`;
+    }, i * this.state.ANIMATION_SPEED_MS);
+  }
   }
 
 
