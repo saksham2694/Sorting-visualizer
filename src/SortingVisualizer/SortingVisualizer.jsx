@@ -22,13 +22,13 @@ export default class SortingVisualizer extends React.Component {
     this.state = {
       array: [],
       NUMBER_OF_ARRAY_BARS: 100,
-      ANIMATION_SPEED_MS: 71,
+      ANIMATION_SPEED_MS: 10,
       maxItem: 0,
     };
   }
 
   setSpeed(newspeed) {
-    const speed = 100 - newspeed + 1;
+    const speed = 51 - newspeed;
     this.setState({ ANIMATION_SPEED_MS:speed });
   }
 
