@@ -1,11 +1,14 @@
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import React from 'react';
-import {getInsertionSortAnimations, getMergeSortAnimations, getSelectionSortAnimations, getQuickSortAnimations } from '../sortingAlgorithms/sortingAlgorithms.js';
-import './SortingVisualizer.css';
+import getMergeSortAnimations from '../sortingAlgorithms/MergeSort.js';
+import getInsertionSortAnimations from'../sortingAlgorithms/InsertionSort.js';
+import getSelectionSortAnimations from'../sortingAlgorithms/SelectionSort.js';
+import getQuickSortAnimations from'../sortingAlgorithms/QuickSort.js';
+import generateArray from './helpers/RandomArray.js';
+import MainHeader from './components/MainHeader.jsx'
 
 
-
-const PRIMARY_COLOR = 'turquoise';
+const PRIMARY_COLOR = 'rgb(227, 236, 235)';
 
 const SECONDARY_COLOR = 'red';
 
@@ -18,14 +21,14 @@ export default class SortingVisualizer extends React.Component {
     super(props);
     this.state = {
       array: [],
-      NUMBER_OF_ARRAY_BARS: 150,
-      BAR_WIDTH: (window.screen.width - 250)/(150) - 2,
-      ANIMATION_SPEED_MS: 2,
+      NUMBER_OF_ARRAY_BARS: 100,
+      ANIMATION_SPEED_MS: 71,
+      maxItem: 0,
     };
   }
 
   setSpeed(newspeed) {
-    const speed = 0.2 + 100 - newspeed;
+    const speed = 100 - newspeed + 1;
     this.setState({ ANIMATION_SPEED_MS:speed });
   }
 
@@ -34,23 +37,21 @@ export default class SortingVisualizer extends React.Component {
   }
 
   resetArray() {
-    const array = [];
     const num = this.state.NUMBER_OF_ARRAY_BARS;
-    for (let i = 0; i < num; i++) {
-      array.push(randomIntFromInterval(5, window.screen.height - 250));
-    }
-    this.setState({ array:array });
+    const array = generateArray(num);
+    const max = Math.max(...array);
+    this.setState({ array:array , maxItem:max });
   }
 
   setNumberOfBars(value) {
-    const width = (window.screen.width - 250)/(value) - 2;
-    this.setState({ NUMBER_OF_ARRAY_BARS: value, BAR_WIDTH: width});
+    this.setState({ NUMBER_OF_ARRAY_BARS:value });
     this.resetArray();
   }
   
 
   mergeSort() {
     const animations = getMergeSortAnimations(this.state.array);
+    const {maxItem} = this.state;
     for (let i = 0; i < animations.length; i++) {
       const arrayBars = document.getElementsByClassName('array-bar');
       const isColorChange = i % 3 !== 2;
@@ -66,8 +67,9 @@ export default class SortingVisualizer extends React.Component {
       } else {
         setTimeout(() => {
           const [barOneIdx, newHeight] = animations[i];
+          const height = (newHeight / maxItem) * 100;
           const barOneStyle = arrayBars[barOneIdx].style;
-          barOneStyle.height = `${newHeight}px`;
+          barOneStyle.height = `calc(${height}% - 20px)`;
         }, i * this.state.ANIMATION_SPEED_MS * 2);
       }
     }
@@ -76,20 +78,21 @@ export default class SortingVisualizer extends React.Component {
   insertionSort() {
     const animations = getInsertionSortAnimations(this.state.array);
     const arrayBars = document.getElementsByClassName('array-bar');
-    
+    const {maxItem} = this.state;
     for (let i = 0; i < animations.length; i += 3) {
       const [barOneIdx, barTwoIdx] = animations[i];
       const [oneHeight, twoHeight] = animations[i + 1];
       const [oneColor, twoColor] = animations[i + 2];
       const barOneStyle = arrayBars[barOneIdx].style;
       const barTwoStyle = arrayBars[barTwoIdx].style;
-
+      const oneRealHeight = (oneHeight / maxItem) * 100;
+      const twoRealHeight = (twoHeight / maxItem) * 100;
       setTimeout(() => {
         const colors = [INSERTION_SECONDARY, SECONDARY_COLOR, PRIMARY_COLOR];
         barOneStyle.backgroundColor = colors[oneColor];
-        barOneStyle.height = `${oneHeight}px`;
+        barOneStyle.height = `calc(${oneRealHeight}% - 20px)`;
         barTwoStyle.backgroundColor = colors[twoColor];
-        barTwoStyle.height = `${twoHeight}px`;
+        barTwoStyle.height = `calc(${twoRealHeight}% - 20px)`;
       }, i * this.state.ANIMATION_SPEED_MS);
     };
     for (let i = 0; i < this.state.NUMBER_OF_ARRAY_BARS; i++) {
@@ -100,30 +103,34 @@ export default class SortingVisualizer extends React.Component {
 
   selectionSort() {
   const animations = getSelectionSortAnimations(this.state.array);
+  const {maxItem} = this.state;
   const arrayBars = document.getElementsByClassName('array-bar');
   const colors = [PRIMARY_COLOR, SELECTION_SECONDARY_COLOR, SECONDARY_COLOR];
+  
   for (let i = 0; i < animations.length; i++) {
     const [barIdx, newHeight, barColor] = animations[i];
     const barStyle = arrayBars[barIdx].style;
+    const height = (newHeight / maxItem) * 100;
 
     setTimeout(() => {
       barStyle.backgroundColor = colors[barColor];
-      barStyle.height = `${newHeight}px`;
+      barStyle.height = `calc(${height}% - 20px)`;
     }, i * this.state.ANIMATION_SPEED_MS);
   }
   }
 
   quickSort() {
   const animations = getQuickSortAnimations(this.state.array);
+  const {maxItem} = this.state;
   const arrayBars = document.getElementsByClassName('array-bar');
   const colors = [PRIMARY_COLOR, SELECTION_SECONDARY_COLOR, SECONDARY_COLOR];
   for (let i = 0; i < animations.length; i++) {
     const [barIdx, newHeight, barColor] = animations[i];
     const barStyle = arrayBars[barIdx].style;
-
+    const height = (newHeight / maxItem) * 100;
     setTimeout(() => {
       barStyle.backgroundColor = colors[barColor];
-      barStyle.height = `${newHeight}px`;
+      barStyle.height = `calc(${height}% - 20px)`;
     }, i * this.state.ANIMATION_SPEED_MS);
   }
   }
@@ -134,75 +141,62 @@ export default class SortingVisualizer extends React.Component {
 
   render() {
     const {array} = this.state;
-    const {BAR_WIDTH} = this.state;
+    const {maxItem} = this.state;
+    const len = array.length;
     return (
-      <div>
-      <header>
-      <nav className='top-bar'>  
-      <div className="slide-container">
-      <div className="label-container">
-        <label htmlFor="size">Array Size</label>
-      </div>
-          <input type="range" min="20" max="310" name="size" value={this.state.NUMBER_OF_ARRAY_BARS} className="slider" id="myRange" onChange={changeEvent => this.setNumberOfBars(changeEvent.target.value)}>
-          </input>
-      </div>
-      <div className='slide-container'>
-      <label for="speed">Sort Speed</label>
-      <input type="range" min="0.2" max="100" name="speed" value={0.2 + 100 - this.state.ANIMATION_SPEED_MS} className="slider" id="mySpeed" onChange={changeEvent => this.setSpeed(changeEvent.target.value)}>
-      </input>
+      <div style={{ 
+        display: 'flex', 
+        flexDirection: 'column', 
+        height: '100vh'}}>
+        <MainHeader 
+          mergeFunc={() => this.mergeSort()}
+          insertFunc={() => this.insertionSort()}
+          selectFunc={() => this.selectionSort()}
+          quickFunc={() => this.quickSort()}
+          generateFunc={() => this.resetArray()}
+          speedFunc={(value) => this.setSpeed(value)}
+          sizeFunc={(value) => this.setNumberOfBars(value)}/>
+        
+        <div
+        style={{
+          backgroundColor: 'rgb(50, 65, 88)',
+          display: 'flex',
+          height: '100%',
+          width: '100vw',
+          flexDirection: 'row',
+          alignItems: 'end',
+          padding: '0px 0px 0px 0px',
+        }}
+      >
+        {array.map((value, idx) => {
+          const height = (value / maxItem) * 100;
+          const width = (1 / len) * 100;
+          return (
+            <div
+              key={idx}
+              style={{
+                height: '100%',
+                display: 'flex',
+                alignItems: 'end',
+                width: `${width}%`,
+              }}
+            >
+              <div 
+                className="array-bar"
+                key={idx}
+                style={{
+                  backgroundColor: PRIMARY_COLOR,
+                  height: `calc(${height}% - 20px)`,
+                  width: '100%',
+                  margin: 'auto 10% 0 10%'
+                }}
+              >
+              </div>
+            </div>
+          )
+        })}
         </div>
-        <div className='head-bar'></div>
-        <ul> 
-          <li>
-            <button onClick={() => this.mergeSort()}>Merge Sort</button>
-          </li>
-          <li>
-            <button onClick={() => this.insertionSort()}>Insertion Sort</button>
-          </li>
-          <li>
-            <button onClick={() => this.selectionSort()}>Selection Sort</button>
-          </li>
-          <li>
-            <button onClick={() => this.quickSort()}>Quick Sort</button>
-          </li>
-          
-        </ul>
-        <div className='head-bar'></div>
-        <ul>
-        <li>  
-            <button onClick={() => this.resetArray()}>Generate New Array</button> 
-          </li>
-        </ul>
-        <div className='head-bar'></div>
-      </nav>  
-      </header>
-      <div className="array-container">
-        {array.map((value, idx) => (
-          <div
-            className="array-bar"
-            key={idx}
-            style={{
-              backgroundColor: PRIMARY_COLOR,
-              height: `${value}px`,
-              width: `${BAR_WIDTH}px`,
-            }}></div>
-        ))}
       </div>
-      </div>
-    );
+    )
   }
-}
-
-function randomIntFromInterval(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-function arraysAreEqual(arrayOne, arrayTwo) {
-  if (arrayOne.length !== arrayTwo.length) return false;
-  for (let i = 0; i < arrayOne.length; i++) {
-    if (arrayOne[i] !== arrayTwo[i]) {
-      return false;
-    }
-  }
-  return true;
 }
