@@ -16,6 +16,8 @@ const INSERTION_SECONDARY = 'Aquamarine';
 
 const SELECTION_SECONDARY_COLOR = 'yellow';
 
+const ALGORITHMS = ['Merge Sort', 'Insertion Sort', 'Selection Sort', 'Quick Sort'];
+
 export default class SortingVisualizer extends React.Component {
   constructor(props) {
     super(props);
@@ -24,6 +26,7 @@ export default class SortingVisualizer extends React.Component {
       NUMBER_OF_ARRAY_BARS: 100,
       ANIMATION_SPEED_MS: 10,
       maxItem: 0,
+      currAlgo: 'Merge Sort',
     };
   }
 
@@ -46,6 +49,25 @@ export default class SortingVisualizer extends React.Component {
   setNumberOfBars(value) {
     this.setState({ NUMBER_OF_ARRAY_BARS:value });
     this.resetArray();
+  }
+
+  setCurrAlgo(newAlgo) {
+    this.setState({ currAlgo:newAlgo });
+  }
+
+  doSort() {
+    if ( this.state.currAlgo === 'Merge Sort') {
+      this.mergeSort();
+    }
+    else if (this.state.currAlgo === 'Insertion Sort') {
+      this.insertionSort();
+    }
+    else if (this.state.currAlgo === 'Selection Sort') {
+      this.selectionSort();
+    }
+    else if (this.state.currAlgo === 'Quick Sort') {
+      this.quickSort();
+    }
   }
   
 
@@ -137,8 +159,6 @@ export default class SortingVisualizer extends React.Component {
 
 
 
-
-
   render() {
     const {array} = this.state;
     const {maxItem} = this.state;
@@ -149,17 +169,18 @@ export default class SortingVisualizer extends React.Component {
         flexDirection: 'column', 
         height: '100vh'}}>
         <MainHeader 
-          mergeFunc={() => this.mergeSort()}
-          insertFunc={() => this.insertionSort()}
-          selectFunc={() => this.selectionSort()}
-          quickFunc={() => this.quickSort()}
           generateFunc={() => this.resetArray()}
           speedFunc={(value) => this.setSpeed(value)}
-          sizeFunc={(value) => this.setNumberOfBars(value)}/>
+          sizeFunc={(value) => this.setNumberOfBars(value)}
+          doSort={() => this.doSort()}
+          currAlgo={this.state.currAlgo}
+          algorithms={ALGORITHMS}
+          setAlgo={(value) => this.setCurrAlgo(value)}
+          />
         
         <div
         style={{
-          backgroundColor: 'rgb(50, 65, 88)',
+          backgroundColor: '#0d1117',
           display: 'flex',
           height: '100%',
           width: '100vw',

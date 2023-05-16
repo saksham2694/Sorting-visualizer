@@ -14,7 +14,7 @@ const SpeedSlider = ({speedFunc}) => {
         <div style={{
                 fontWeight: 'bold',
                 fontFamily: 'Georgia', 
-                color: 'rgb(24, 32, 42)',
+                color: 'white',
                 fontSize: '120%'}}>Sort Speed</div>
         <Slider
             defaultValue={41}
@@ -23,7 +23,7 @@ const SpeedSlider = ({speedFunc}) => {
             step={1}
             style={{width: 150}}
             handleStyle={{borderColor: 'rgb(24, 32, 42)'}}
-            trackStyle={{background: 'rgb(24, 32, 42)'}}
+            trackStyle={{background: '#3fb950'}}
             railStyle={{background: 'white'}}
             onChange={(value) => speedFunc(value)}
         />
