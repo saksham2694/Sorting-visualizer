@@ -1,6 +1,6 @@
 
 
-# Sorting Algorithm Visualizer
+# Sorting Algorithm Visualizer [Link](https://saksham2694.github.io/Sorting-visualizer/)
 
 https://github.com/saksham2694/Sorting-visualizer/assets/71970380/55ec9c3a-6cb2-4686-8907-8cc3c8f37bc2
 
